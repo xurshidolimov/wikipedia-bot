@@ -5,7 +5,7 @@ from aiogram import Bot, Dispatcher, executor, types
 
 #xurshidolimovbot
 
-API_TOKEN = '1903110915:AAGSo9CkqwM1BPD4LHi5JhNtgGe5c-Rjr78'
+API_TOKEN = '***'
 wikipedia.set_lang("uz")
 
 # Initialize bot and dispatcher
