@@ -14,15 +14,14 @@ admin = ReplyKeyboardMarkup(
     keyboard=[
         [
         KeyboardButton(text="📤 Xabar yuborish"),
-        KeyboardButton(text="🗑 O'chirish"),
+        KeyboardButton(text="🔋 Ma'lumotlar ombori"),
         ],
         [
-        KeyboardButton(text="🔋 Ma'lumotlar ombori"),
+        KeyboardButton(text="👤 Foydalanuvchiga xabar yuborish"),
         KeyboardButton(text="📊 Foydalanuvchilar soni"),
         ],
         [
-        KeyboardButton(text="👤 Foydalanuvchiga yuborish"),
-        KeyboardButton(text="💾 ADS Chat"),
+        KeyboardButton(text="💰 Kichik reklama"),
         ]
     ], resize_keyboard=True
 )
