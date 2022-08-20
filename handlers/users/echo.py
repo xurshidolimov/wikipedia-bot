@@ -16,7 +16,7 @@ async def language(message: types.Message):
         db.add_user(id=message.from_user.id,
                     name=name)
     except sqlite3.IntegrityError as err:
-        await bot.send_message(chat_id=ADMINS[0], text=err)
+        pass
 
 
 @dp.message_handler(text="🇬🇧 english")
@@ -28,7 +28,7 @@ async def language(message: types.Message):
         db.add_user(id=message.from_user.id,
                     name=name)
     except sqlite3.IntegrityError as err:
-        await bot.send_message(chat_id=ADMINS[0], text=err)
+        pass
 
 
 @dp.message_handler(text="🇷🇺 русский")
@@ -40,7 +40,7 @@ async def language(message: types.Message):
         db.add_user(id=message.from_user.id,
                     name=name)
     except sqlite3.IntegrityError as err:
-        await bot.send_message(chat_id=ADMINS[0], text=err)
+        pass
 
 
 @dp.message_handler()
@@ -49,7 +49,8 @@ async def sendwiki(message: types.Message):
     try:
         respond = wikipedia.summary(message.text)
         await message.answer(respond)
-        await message.answer(box)
+        if box:
+            await message.answer(box)
     except:
         await message.answer("Bu mavzuga oid maqola topilmadi "
                              "\nNo article found for this topic"
@@ -58,4 +59,4 @@ async def sendwiki(message: types.Message):
         db.add_user(id=message.from_user.id,
                     name=name)
     except sqlite3.IntegrityError as err:
-        await bot.send_message(chat_id=ADMINS[0], text=err)
+        pass

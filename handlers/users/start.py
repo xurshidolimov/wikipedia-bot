@@ -15,7 +15,7 @@ async def bot_start(message: types.Message):
         db.add_user(id=message.from_user.id,
                     name=name)
     except sqlite3.IntegrityError as err:
-        await bot.send_message(chat_id=ADMINS[0], text=err)
+        pass
 
     await message.answer("Tilni tanlang \nChoose language \nВыберите язык", reply_markup=til)
 

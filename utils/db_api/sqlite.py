@@ -1,5 +1,5 @@
 import sqlite3
-box = ""
+box = "@xurshid_olimov"
 
 class Database:
     def __init__(self, path_to_db="main.db"):
