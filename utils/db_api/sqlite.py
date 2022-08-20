@@ -1,5 +1,4 @@
 import sqlite3
-box = "@xurshid_olimov"
 
 class Database:
     def __init__(self, path_to_db="main.db"):
@@ -70,6 +69,35 @@ class Database:
 
     def delete_users(self):
         self.execute("DELETE FROM Users WHERE TRUE", commit=True)
+
+    def create_table_reklama(self):
+        sql = """
+        CREATE TABLE Reklama (
+            id int NOT NULL,
+            Name varchar(2000) NOT NULL,
+            PRIMARY KEY (id)
+            );
+"""
+        self.execute(sql, commit=True)
+
+
+
+    def add_reklama(self, name: str, id: int):
+
+        sql = """
+        INSERT INTO Reklama(id, Name) VALUES(?, ?)
+        """
+        self.execute(sql, parameters=(id, name), commit=True)
+
+
+    def select_reklama(self):
+        sql = """
+        SELECT name FROM Reklama
+        """
+        return self.execute(sql, fetchall=True)
+
+    def delete_reklama(self, id):
+        self.execute("DELETE FROM Reklama WHERE id=1", commit=True)
 
 def logger(statement):
     print(f"""

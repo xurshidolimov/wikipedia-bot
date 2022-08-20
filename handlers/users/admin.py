@@ -1,4 +1,5 @@
 import asyncio
+import sqlite3
 
 from aiogram.dispatcher import FSMContext
 from aiogram import types
@@ -96,12 +97,13 @@ async def kichikreklama1(message: types.Message):
 @dp.message_handler(state=SendKichikReklama.kichikreklama)
 async def kichikreklama2(message: types.Message, state: FSMContext):
     kichikreklama = message.text
-    await state.update_data({'kichikreklama': kichikreklama})
-    data = await state.get_data()
-    xat = data['kichikreklama']
-    box = xat
+
+    try:
+        db.delete_reklama(id=1)
+        db.add_reklama(id=1, name=kichikreklama)
+    except sqlite3.IntegrityError as err:
+        pass
 
     # adminga hisobot berish
     await message.answer("Xabar saqlandi")
     await state.finish()
-    return box

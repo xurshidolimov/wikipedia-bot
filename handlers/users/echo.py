@@ -2,9 +2,9 @@ import sqlite3
 
 from aiogram import types
 import wikipedia
-from utils.db_api.sqlite import box
+
 from data.config import ADMINS
-from loader import dp, db, bot
+from loader import dp, db
 
 
 @dp.message_handler(text="🇺🇿 o'zbekcha")
@@ -49,8 +49,12 @@ async def sendwiki(message: types.Message):
     try:
         respond = wikipedia.summary(message.text)
         await message.answer(respond)
-        if box:
-            await message.answer(box)
+        bo = db.select_reklama()
+        if bo:
+            bo = str(bo)
+            bo = bo[3:]
+            bo = bo[:-4]
+            await message.answer(bo)
     except:
         await message.answer("Bu mavzuga oid maqola topilmadi "
                              "\nNo article found for this topic"
