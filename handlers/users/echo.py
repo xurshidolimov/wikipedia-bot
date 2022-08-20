@@ -52,8 +52,7 @@ async def sendwiki(message: types.Message):
         bo = db.select_reklama()
         if bo:
             bo = str(bo)
-            bo = bo[3:]
-            bo = bo[:-4]
+            bo = bo[3: -4]
             await message.answer(bo)
     except:
         await message.answer("Bu mavzuga oid maqola topilmadi "
