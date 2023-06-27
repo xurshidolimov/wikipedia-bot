@@ -22,6 +22,10 @@ admin = ReplyKeyboardMarkup(
         ],
         [
         KeyboardButton(text="💰 Kichik reklama"),
+        KeyboardButton(text="💰 Kichik reklamani o'chirish"),
+        ],
+        [
+        KeyboardButton(text="◀️Ortga"),
         ]
     ], resize_keyboard=True
 )

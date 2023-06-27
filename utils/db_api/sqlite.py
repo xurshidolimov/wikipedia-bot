@@ -31,6 +31,7 @@ class Database:
         CREATE TABLE Users (
             id int NOT NULL,
             Name varchar(255) NOT NULL,
+            language varchar(3),
             PRIMARY KEY (id)
             );
 """
@@ -43,13 +44,11 @@ class Database:
         ])
         return sql, tuple(parameters.values())
 
-    def add_user(self, id: int, name: str):
-        # SQL_EXAMPLE = "INSERT INTO Users(id, Name) VALUES(1, 'John')"
-
+    def add_user(self, id: int, name: str, language: str):
         sql = """
-        INSERT INTO Users(id, Name) VALUES(?, ?)
+        INSERT INTO Users(id, Name, language) VALUES(?, ?, ?)
         """
-        self.execute(sql, parameters=(id, name), commit=True)
+        self.execute(sql, parameters=(id, name, language), commit=True)
 
     def select_all_users(self):
         sql = """
@@ -58,7 +57,6 @@ class Database:
         return self.execute(sql, fetchall=True)
 
     def select_user(self, **kwargs):
-        # SQL_EXAMPLE = "SELECT * FROM Users where id=1 AND Name='John'"
         sql = "SELECT * FROM Users WHERE "
         sql, parameters = self.format_args(sql, kwargs)
 
@@ -69,6 +67,12 @@ class Database:
 
     def delete_users(self):
         self.execute("DELETE FROM Users WHERE TRUE", commit=True)
+
+    def update_user_language(self, language, id):
+        sql = f"""
+        UPDATE Users SET language=? WHERE id=?
+        """
+        return self.execute(sql, parameters=(language, id), commit=True)
 
     def create_table_reklama(self):
         sql = """

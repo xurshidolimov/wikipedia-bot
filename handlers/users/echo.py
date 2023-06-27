@@ -1,65 +1,46 @@
-import sqlite3
-
 from aiogram import types
-import wikipedia
-
-from data.config import ADMINS
 from loader import dp, db
+import wikipedia
 
 
 @dp.message_handler(text="🇺🇿 o'zbekcha")
-async def language(message: types.Message):
-    name = message.from_user.full_name
-    wikipedia.set_lang('uz')
-    await message.answer(f"Salom {message.from_user.full_name}! \nMaqola mavzusini yuboring")
-    try:
-        db.add_user(id=message.from_user.id,
-                    name=name)
-    except sqlite3.IntegrityError as err:
-        pass
+async def language_uz(message: types.Message):
+    db.update_user_language(language='uz', id=message.from_user.id)
+    await message.answer("Maqola mavzusini yuboring")
 
 
 @dp.message_handler(text="🇬🇧 english")
-async def language(message: types.Message):
-    name = message.from_user.full_name
-    wikipedia.set_lang('en')
-    await message.answer(f"Hi {message.from_user.full_name}! \nSend article subject")
-    try:
-        db.add_user(id=message.from_user.id,
-                    name=name)
-    except sqlite3.IntegrityError as err:
-        pass
+async def language_en(message: types.Message):
+    db.update_user_language(language='en', id=message.from_user.id)
+    await message.answer("Send article subject")
 
 
 @dp.message_handler(text="🇷🇺 русский")
-async def language(message: types.Message):
-    name = message.from_user.full_name
-    wikipedia.set_lang('ru')
-    await message.answer(f"Привет {message.from_user.full_name}! \nОтправить текст статьи")
-    try:
-        db.add_user(id=message.from_user.id,
-                    name=name)
-    except sqlite3.IntegrityError as err:
-        pass
+async def language_ru(message: types.Message):
+    db.update_user_language(language='ru', id=message.from_user.id)
+    await message.answer("Отправить текст статьи")
 
 
 @dp.message_handler()
 async def sendwiki(message: types.Message):
-    name = message.from_user.full_name
+    user = db.select_user(id=message.from_user.id)
+    language = user[2]
     try:
+        wikipedia.set_lang(language)
         respond = wikipedia.summary(message.text)
         await message.answer(respond)
-        bo = db.select_reklama()
-        if bo:
-            bo = str(bo)
-            bo = bo[3: -4]
-            await message.answer(bo)
+
+# ------kichik reklama yuborish ---------------------------------
+        reklama=db.select_reklama()
+        if reklama:
+            reklama=str(reklama)
+            await message.answer(reklama[3: -4])
+# ---------------------------------------------------------------
     except:
-        await message.answer("Bu mavzuga oid maqola topilmadi "
-                             "\nNo article found for this topic"
-                             "\nНе найдена статья по этой теме")
-    try:
-        db.add_user(id=message.from_user.id,
-                    name=name)
-    except sqlite3.IntegrityError as err:
-        pass
+        if language=='uz':
+            await message.answer("Bu mavzuga oid maqola topilmadi ")
+        elif language=='ru':
+            await message.answer("Не найдена статья по этой теме")
+        else:
+            await message.answer("No article found for this topic")
+

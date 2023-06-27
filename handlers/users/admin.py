@@ -1,19 +1,17 @@
 import asyncio
 import sqlite3
-
 from aiogram.dispatcher import FSMContext
 from aiogram import types
 from data.config import ADMINS
 from keyboards.default import admin
 from loader import dp, db, bot
 from states.states import SendMessage, SendReklama, SendKichikReklama
+from keyboards.default import til
+
 
 @dp.message_handler(commands=['admin'], user_id=ADMINS)
 async def send_welcome(message: types.Message):
-    if message.from_user.id in ADMINS or message.from_user.id == 679932311:
-        await message.reply(f"Salom Wikipediauz telegram boti admin paneliga xush kelibsiz!", reply_markup=admin)
-    else:
-        await message.reply('Bu mavzuda maqola topilmadi')
+    await message.reply(f"Salom Wikipediauz telegram boti admin paneliga xush kelibsiz!", reply_markup=admin)
 
 
 @dp.message_handler(text="🔋 Ma'lumotlar ombori", user_id=ADMINS)
@@ -107,3 +105,22 @@ async def kichikreklama2(message: types.Message, state: FSMContext):
     # adminga hisobot berish
     await message.answer("Xabar saqlandi")
     await state.finish()
+
+
+@dp.message_handler(text="💰 Kichik reklamani o'chirish", user_id=ADMINS)
+async def delete_reklama(message:types.Message):
+    db.delete_reklama(id=1)
+    await message.answer("Kichik reklama o'chirildi")
+
+
+@dp.message_handler(text="◀️Ortga", user_id=ADMINS)
+async def delete_reklama(message:types.Message):
+    user = db.select_user(id=message.from_user.id)
+    language = user[2]
+
+    if language == 'uz':
+        await message.answer("Maqola mavzusini yuboring", reply_markup=til)
+    elif language == 'ru':
+        await message.answer("Отправить текст статьи", reply_markup=til)
+    else:
+        await message.answer("Send article subject", reply_markup=til)
